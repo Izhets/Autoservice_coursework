@@ -1,0 +1,38 @@
+server:
+  port: 8181
+
+spring:
+  application:
+    name: autoservice-app
+  datasource:
+    url: jdbc:postgresql://localhost:5433/autoservice
+    username: postgres
+    password: postgres
+    driverClassName: org.postgresql.Driver
+    hikari:
+      schema: autoservice
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+keycloak:
+  auth-server-url: ${KEYCLOAK_URL_AUTH:http://localhost:8484/auth}
+  realm: ${KEYCLOAK_REALM:AutoService}
+  resource: ${KEYCLOAK_CLIENT:autoservice_client}
+  credentials:
+    secret: ${KEYCLOAK_SECRET:6C1U25PSbrftY259BW6MRuI1p3vq9ws4}
+
+keycloak_data:
+  admin:
+    username: ${KEYCLOAK_USERNAME_ADMIN:admin}
+    password: ${KEYCLOAK_PASSWORD_ADMIN:1}
+
+management:
+  endpoints.web.exposure.include: 'prometheus, health'
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
